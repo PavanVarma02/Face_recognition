@@ -6,3 +6,5 @@ The dataset can be downloaded using below links:
 The pipeline performance is evaluated over five metrics: Rank-1 Accuracy, Top 5 Accuracy, True Acceptance Rate (TAR), False Acceptance Rate (FAR) and AUC of the ROC curve.
 
 			
+import FaceDTCM.utils as dtcmUtils
+import FaceDTCM.Pipeline as faceDtcmPipeline
