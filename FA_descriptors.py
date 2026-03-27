@@ -27,7 +27,7 @@ def get_embedding(app, img_path):
         faces = app.get(img)
 
         if len(faces) == 0:
-            # no face detected — resize and retry once
+            # no face detected resize 
             img = cv2.resize(img, (160, 160))
             faces = app.get(img)
 
@@ -35,7 +35,7 @@ def get_embedding(app, img_path):
             print(f"  No face found: {img_path}")
             return None
 
-        # if multiple faces detected, take the largest one
+        
         face = max(faces, key=lambda f: (f.bbox[2]-f.bbox[0]) * (f.bbox[3]-f.bbox[1]))
         return face.embedding / np.linalg.norm(face.embedding)   # L2 normalize
 
@@ -68,7 +68,7 @@ def process_dataset(name, splits_root, output_root, app):
     with open(splits_dir / "label_map.json") as f:
         label_map = json.load(f)
 
-    print(f"\n--- {name.upper()} ({len(label_map)} identities) ---")
+    print(f"\n {name.upper()} ({len(label_map)} identities) ")
 
     for split in ["train", "eval"]:
         paths, labels = collect_paths(splits_dir / split, label_map)
@@ -114,4 +114,4 @@ if __name__ == "__main__":
             continue
         process_dataset(name, SPLITS_ROOT, OUTPUT_ROOT, app)
 
-    print("\nDone. Next: python evaluate.py")
+    print("\nDone.")
