@@ -149,3 +149,26 @@ Imposter pairs means different person from reference and test images.
 ## AUC of ROC curve 
 It measures the ability of model to separate genuine pairs from impostor pairs across all possible thresholds.
 
+## Results
+Results of differnet model is presented below, images of AUC can be found in results directory. 
+### LBP model
+| Dataset | Rank-1 | Top-5 | TAR | FAR | AUC |
+|---|---|---|---|---|---|
+| AT&T | 75.83 % | 88.33% | 65.0% | 1.11.0% |95.08%|
+| IMFDB | 7.5% | 19.0% | 2.51% | 1.0% | 53.91% |
+| IMDB-WIKI | 2.55% | 4.75% | 2.11% | 1.0% | 52.78%|
+
+
+### Face recognition model
+| Dataset | Rank-1 | Top-5 | TAR | FAR | AUC |
+|---|---|---|---|---|---|
+| AT&T | 95.7% | 96.6% | 100.0% | 100.0% |100.0%|
+| IMFDB | 60.19% | 80.58% | 44.22% | 1.01% | 93.76% |
+| IMDB-WIKI | 51.87% | 57.26% | 37.05% | 1.0% | 72.92%|
+
+### Face Analysis model
+| Dataset | Rank-1 | Top-5 | TAR | FAR | AUC |
+|---|---|---|---|---|---|
+| AT&T | 100.0% | 100.0% | 100.0% | 100.0% |100.0%|
+| IMFDB | 90.41% | 97.26% | 76.47% | 1.0% | 96.74% |
+| IMDB-WIKI | 60.85% | 63.17% | 40.83% | 1.0% | 71.83%|
