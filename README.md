@@ -1,4 +1,4 @@
-This repository features the evaluation pipeline for three different dataset : AT&T, IMFDB and IMDB-WIKI. The evaluation pipeline can be ran on the dataset by running three different file : dataset_prep.py, face_descriptors.py, evaluate.py.
+This repository features the evaluation pipeline for three different dataset : AT&T, IMFDB and IMDB-WIKI. The evaluation pipeline can be re run on the dataset by running three different file : dataset_prep.py, face_descriptors.py, evaluate.py.
 The dataset can be downloaded using below links:
 - AT&T : [Download](https://git-disl.github.io/GTDLBench/datasets/att_face_dataset/)
 - IMFDB:[Download](https://www.kaggle.com/datasets/anirudhsimhachalam/indian-movie)
