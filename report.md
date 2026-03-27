@@ -95,5 +95,57 @@ _temp
   Eval > Train check : True
 ```
 
-# Face Descriptors
+
+# Face Descriptors Extraction
+
+Once the dataset is split into train and eval sets the next step is extracting face descriptors. A face descriptor is a set of numbers that represents a face similar faces produce similar numbers and different faces produce different numbers. Three different methods were used to extract these descriptors.
+
+Before passing any image to the model a basic preprocessing step is done. Since AT&T images are grayscale they are first converted to a 3 channel image because all models require color images as input. The image is initially passed through the model at 320x320 size. If no face is found it is resized to 160x160 and tried again. Once descriptors are extracted they are saved as numpy arrays along with their identity labels and normalized using L2 norm.
+
+
+## FaceAnalysis by InsightFace
+
+FaceAnalysis from the InsightFace library handles the entire face recognition process in one place detection, alignment and feature extraction all happen internally.When an image is passed to FaceAnalysis the first thing it does is detect faces using RetinaFace. RetinaFace is a CNN based face detector that works reliably across different face sizes, lighting conditions and angles.
+
+After detection the model finds landmark points on the face 106 points in 2D and 68 points in 3D. These landmarks mark specific locations like eye corners, nose tip and mouth corners.
+Once landmarks are found the face is aligned. Five specific points both eye centers, nose tip and both mouth corners are used to compute a transformation that brings the face to a fixed standard position in a 112x112 image. This transformation is then applied to all pixels in the image. Alignment is important because recognition works by comparing pixel differences between facial features if the face is not in a standard position the model gets confused even for the same person.
+
+After alignment the ArcFace model extracts features using a ResNet50 architecture. ArcFace was trained on 600,000 identities and produces 512 numbers representing the face descriptors.
+
+
+## LBP (Local Binary Patterns)
+
+LBP is a classical method that does not require any pretrained model or GPU. It works purely on pixel mathematics.
+
+For each pixel in the image its value is compared with its 8 surrounding neighbors. If a neighbor is greater than or equal to the center pixel it counts as 1 otherwise 0. Summing these gives a value between 0 and 8 for each pixel.
+
+The image is divided into small grid cells and a histogram of these values is built for each cell. All histograms are joined together to form the final descriptor of 576 numbers.
+
+LBP works reasonably well on controlled datasets like AT&T because those images are already cropped, frontal and have consistent lighting. It struggles on real world datasets like IMFDB and IMDB-WIKI because it has no face detection or alignment step the entire image is treated as a face. Any variation in pose, lighting or scale significantly affects its performance.
+
+
+## Face ecognition Library
+
+The face_recognition library works similarly to FaceAnalysis but uses different methods. Face detection is done using HOG (Histogram of Oriented Gradients) which looks fpr edge patterns in the image to find faces. After detection 68 landmark points are identified and 5 key points are used to align the face the same way as FaceAnalysis. Feature extraction is done using a ResNet network producing 128 numbers per face.
+
+The main difference from FaceAnalysis is that HOG based detection is less robust than RetinaFace it works well on frontal faces but struggles with side profiles, small faces and poor lighting, which leads to more images being skipped on challenging datasets.
+
+
+# Evaluation
+
+
+The metric used for this evaluation pipeline are Rank1 accuracy, Top accuracy, True Acceptane Rate (TAR), False Acceptance Rate (FAR)  and AUC of the ROC curve.
+ ## Rank-1 Accuracy
+Rank 1 accuracy is very strict metric, it tells us how often model is able to correctly predict on very first try with no second chances.
+ ## TOP 5 Accuracy
+It tells us how often the ground truth was suggested by the model even if it was not on top.
+## True Acceptance rate (TAR)
+It tells us out of all genuine pair (same person) how many are correctly accepted by the system at a given threshold. High TAR means model rarely misses real match. 
+Genuine pair means same person image from reference and test.
+## False Acceptance rate (FAR)
+ It tells us that out of all imposter pairs, how many of them are correctly accepted by the model at a given threshold. A low FAR means model rarely confuses between different people.
+Imposter pairs means different person from reference and test images.
+
+## AUC of ROC curve 
+It measures the ability of model to separate genuine pairs from impostor pairs across all possible thresholds.
 
