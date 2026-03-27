@@ -10,17 +10,17 @@ def get_lbp_embedding(img_path):
     if img is None:
         return None
 
-    # convert to grayscale — LBP works on grayscale
+    
     if len(img.shape) == 3:
         img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
-    # resize to fixed size so all feature vectors are same length
+    
     img = cv2.resize(img, (128, 128))
 
-    # compute LBP features
+    # LBP features
     lbp = compute_lbp(img)
 
-    # normalize
+    
     norm = np.linalg.norm(lbp)
     if norm == 0:
         return None
@@ -28,11 +28,7 @@ def get_lbp_embedding(img_path):
 
 
 def compute_lbp(gray_img, num_points=8, radius=1, grid_x=8, grid_y=8):
-    """
-    Divides image into grid_x * grid_y cells.
-    Computes LBP histogram for each cell.
-    Concatenates all histograms into one feature vector.
-    """
+    
     h, w   = gray_img.shape
     cell_h = h // grid_y
     cell_w = w // grid_x
@@ -41,21 +37,21 @@ def compute_lbp(gray_img, num_points=8, radius=1, grid_x=8, grid_y=8):
 
     for i in range(grid_y):
         for j in range(grid_x):
-            # crop one cell
+            
             cell = gray_img[i*cell_h:(i+1)*cell_h,
                             j*cell_w:(j+1)*cell_w]
 
-            # compute LBP for this cell manually
+            
             lbp_cell = np.zeros_like(cell, dtype=np.uint8)
             for dy in range(-radius, radius+1):
                 for dx in range(-radius, radius+1):
                     if dx == 0 and dy == 0:
                         continue
-                    # shift image and compare with center
+                    
                     shifted = np.roll(np.roll(cell, dy, axis=0), dx, axis=1)
                     lbp_cell += (shifted >= cell).astype(np.uint8)
 
-            # histogram of LBP values for this cell
+            
             hist, _ = np.histogram(lbp_cell.ravel(), bins=num_points+1,
                                    range=(0, num_points+1))
             histograms.append(hist.astype(np.float32))
@@ -87,7 +83,7 @@ def process_dataset(name, splits_root, output_root):
     with open(splits_dir / "label_map.json") as f:
         label_map = json.load(f)
 
-    print(f"\n--- {name.upper()} ({len(label_map)} identities) ---")
+    print(f"\n {name.upper()} ({len(label_map)} identities) ")
 
     for split in ["train", "eval"]:
         paths, labels = collect_paths(splits_dir / split, label_map)
@@ -118,7 +114,7 @@ if __name__ == "__main__":
     BASE = "C:/Users/ARDB/anaconda3/envs/venv/Assignment/Face-Recognition"
 
     SPLITS_ROOT = f"{BASE}/data/splits"
-    OUTPUT_ROOT = f"{BASE}/data/embeddings_lbp"   # separate folder from arcface
+    OUTPUT_ROOT = f"{BASE}/data/embeddings_lbp"   
     DATASETS    = ["att", "imfdb", "imdbwiki"]
 
     for name in DATASETS:
@@ -127,4 +123,4 @@ if __name__ == "__main__":
             continue
         process_dataset(name, SPLITS_ROOT, OUTPUT_ROOT)
 
-    print("\nDone. Next: python evaluate.py")
+    print("\nDone")
