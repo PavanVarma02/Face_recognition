@@ -103,8 +103,8 @@ if __name__ == "__main__":
 
     # SPLITS_ROOT = "data/splits"
     # OUTPUT_ROOT = "data/embeddings"
-    # DATASETS    = ["att", "imfdb", "imdbwiki"]
-    DATASETS    = ["att",  "imdbwiki"]
+    DATASETS    = ["att", "imfdb", "imdbwiki"]
+    # DATASETS    = ["att",  "imdbwiki"]
 
     app = load_model()
 
