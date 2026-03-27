@@ -1,0 +1,35 @@
+[
+  {
+    "dataset": "att",
+    "identities": 40,
+    "gallery": 40,
+    "queries": 120,
+    "rank1": 1.0,
+    "top5": 1.0,
+    "tar": 1.0,
+    "far": 1.0,
+    "auc": 1.0
+  },
+  {
+    "dataset": "imfdb",
+    "identities": 100,
+    "gallery": 588,
+    "queries": 876,
+    "rank1": 0.9041,
+    "top5": 0.9726,
+    "tar": 0.7647,
+    "far": 0.01,
+    "auc": 0.9674
+  },
+  {
+    "dataset": "imdbwiki",
+    "identities": 418,
+    "gallery": 1966,
+    "queries": 3310,
+    "rank1": 0.6085,
+    "top5": 0.6317,
+    "tar": 0.4083,
+    "far": 0.01,
+    "auc": 0.7183
+  }
+]
