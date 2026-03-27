@@ -11,7 +11,6 @@ except ImportError:
 
 
 def get_embedding(img_path):
-    # face_recognition expects RGB, cv2 loads BGR
     img = cv2.imread(img_path)
     if img is None:
         return None
@@ -26,7 +25,7 @@ def get_embedding(img_path):
     embeddings = face_recognition.face_encodings(img)
 
     if len(embeddings) == 0:
-        # retry with a larger image — sometimes small faces are missed
+        
         img = cv2.resize(img, (300, 300))
         embeddings = face_recognition.face_encodings(img)
 
@@ -62,7 +61,7 @@ def process_dataset(name, splits_root, output_root):
     with open(splits_dir / "label_map.json") as f:
         label_map = json.load(f)
 
-    print(f"\n--- {name.upper()} ({len(label_map)} identities) ---")
+    print(f"\n{name.upper()} ({len(label_map)} identities) ")
 
     for split in ["train", "eval"]:
         paths, labels = collect_paths(splits_dir / split, label_map)
@@ -105,4 +104,4 @@ if __name__ == "__main__":
             continue
         process_dataset(name, SPLITS_ROOT, OUTPUT_ROOT)
 
-    print("\nDone. Next: python evaluate.py")
+    print("\nDone")
